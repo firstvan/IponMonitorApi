@@ -1,8 +1,8 @@
 package hu.unideb.inf.firstvan.processor;
 
-import hu.unideb.inf.firstvan.model.Monitor;
+import hu.unideb.inf.firstvan.model.*;
 
-import hu.unideb.inf.firstvan.model.Price;
+import hu.unideb.inf.firstvan.utils.NumberParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UnknownFormatConversionException;
 
 
 public class MonitorProcessor {
@@ -68,16 +69,19 @@ public class MonitorProcessor {
     private void setMonitorSpecificationByPropertiesArray(Monitor monitor, String[] properties) {
         switch (properties[0]) {
             case "képernyő átló":
-                monitor.setScreenSize(properties[1]);
+                ScreenSize screenSize = getScreenSize(properties[1]);
+                monitor.setScreenSize(screenSize);
                 break;
             case "felbontás":
                 monitor.setResolution(properties[1]);
                 break;
             case "válaszidő":
-                monitor.setResponseTime(properties[1]);
+                ResponseTime responseTime = getResponseTime(properties[1]);
+                monitor.setResponseTime(responseTime);
                 break;
             case "képfrissítési frekvencia":
-                monitor.setRefreshRate(properties[1]);
+                RefreshRate refreshRate = getRefreshRate(properties[1]);
+                monitor.setRefreshRate(refreshRate);
                 break;
             case "képarány":
                 monitor.setAspectRatio(properties[1]);
@@ -85,7 +89,53 @@ public class MonitorProcessor {
             case "szín":
                 monitor.setColor(properties[1]);
                 break;
+            case "kontrasztarány":
+                monitor.setContrast(properties[1]);
+                break;
+            case "fényerő":
+                Brightness brightness = getBrightness(properties[1]);
+                monitor.setBrightness(brightness);
+                break;
         }
+    }
+
+    private RefreshRate getRefreshRate(String property) {
+        RefreshRate refreshRate = new RefreshRate();
+        String[] texts = property.trim().split(" ");
+        checkFormatIsValid(texts);
+        refreshRate.setValue(BigDecimal.valueOf(Long.valueOf(texts[0])));
+        refreshRate.setUnit(texts[1]);
+        return refreshRate;
+    }
+
+    private ResponseTime getResponseTime(String property) {
+        ResponseTime responseTime = new ResponseTime();
+        String[] texts = property.trim().split(" ");
+        checkFormatIsValid(texts);
+        responseTime.setValue(BigDecimal.valueOf(Long.valueOf(texts[0])));
+        responseTime.setUnit(texts[1]);
+        return responseTime;
+    }
+
+    private Brightness getBrightness(String property) {
+        Brightness brightness = new Brightness();
+        brightness.setValue(BigDecimal.valueOf(Long.valueOf(property)));
+        brightness.setUnit("cd/m2");
+        return brightness;
+    }
+
+    private void checkFormatIsValid(String[] texts) {
+        if (texts.length != 2) {
+            throw new UnknownFormatConversionException("Invalid format") ;
+        }
+    }
+
+    private ScreenSize getScreenSize(String property) {
+        ScreenSize screenSize = new ScreenSize();
+        screenSize.setValue(NumberParser.getIntNumberFromString(property));
+        // TODO: ha több mértékegység megjelenik itt lekezelni.
+        screenSize.setUnit("inch");
+        return screenSize;
     }
 
     private String parseName(Document doc) {

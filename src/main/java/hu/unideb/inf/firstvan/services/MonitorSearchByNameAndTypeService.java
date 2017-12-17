@@ -7,7 +7,6 @@ import hu.unideb.inf.firstvan.processor.MonitorProcessor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.math.BigDecimal;
 
 @javax.xml.bind.annotation.XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -20,7 +21,9 @@ import javax.xml.bind.annotation.XmlElement;
             "responseTime",
             "refreshRate",
             "aspectRatio",
-            "color"
+            "color",
+            "contrast",
+            "brightness"
         }
 )
 public class Monitor {
@@ -38,22 +41,28 @@ public class Monitor {
     private String description;
 
     @XmlElement
-    private String  screenSize;
+    private ScreenSize screenSize;
 
     @XmlElement
     private String resolution;
 
     @XmlElement
-    private String responseTime;
+    private ResponseTime responseTime;
 
     @XmlElement
-    private String refreshRate;
+    private RefreshRate refreshRate;
 
     @XmlElement
     private String aspectRatio;
 
     @XmlElement
     private String color;
+
+    @XmlElement
+    private String contrast;
+
+    @XmlElement
+    private Brightness brightness;
 
     public Monitor() {
     }
@@ -90,11 +99,11 @@ public class Monitor {
         this.description = description;
     }
 
-    public String getScreenSize() {
+    public ScreenSize getScreenSize() {
         return screenSize;
     }
 
-    public void setScreenSize(String screenSize) {
+    public void setScreenSize(ScreenSize screenSize) {
         this.screenSize = screenSize;
     }
 
@@ -106,19 +115,19 @@ public class Monitor {
         this.resolution = resolution;
     }
 
-    public String getResponseTime() {
+    public ResponseTime getResponseTime() {
         return responseTime;
     }
 
-    public void setResponseTime(String responseTime) {
+    public void setResponseTime(ResponseTime responseTime) {
         this.responseTime = responseTime;
     }
 
-    public String getRefreshRate() {
+    public RefreshRate getRefreshRate() {
         return refreshRate;
     }
 
-    public void setRefreshRate(String refreshRate) {
+    public void setRefreshRate(RefreshRate refreshRate) {
         this.refreshRate = refreshRate;
     }
 
@@ -136,6 +145,22 @@ public class Monitor {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getContrast() {
+        return contrast;
+    }
+
+    public void setContrast(String contrast) {
+        this.contrast = contrast;
+    }
+
+    public Brightness getBrightness() {
+        return brightness;
+    }
+
+    public void setBrightness(Brightness brightness) {
+        this.brightness = brightness;
     }
 
     public String toString() {
