@@ -1,12 +1,11 @@
 package hu.unideb.inf.firstvan.model;
 
+import hu.unideb.inf.firstvan.utils.LocalDateAdapter;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import java.math.BigDecimal;
+import javax.xml.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @javax.xml.bind.annotation.XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,7 +22,9 @@ import java.math.BigDecimal;
             "aspectRatio",
             "color",
             "contrast",
-            "brightness"
+            "brightness",
+            "images",
+            "deleveryTime"
         }
 )
 public class Monitor {
@@ -63,6 +64,15 @@ public class Monitor {
 
     @XmlElement
     private Brightness brightness;
+
+    @XmlElement(name = "image")
+    @XmlElementWrapper(name="images")
+    private List<Image> images;
+
+    @XmlElement(name = "deleveryTime")
+    @XmlSchemaType(name = "date")
+    @javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate deleveryTime;
 
     public Monitor() {
     }
@@ -161,6 +171,22 @@ public class Monitor {
 
     public void setBrightness(Brightness brightness) {
         this.brightness = brightness;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public LocalDate getDeleveryTime() {
+        return deleveryTime;
+    }
+
+    public void setDeleveryTime(LocalDate deleveryTime) {
+        this.deleveryTime = deleveryTime;
     }
 
     public String toString() {

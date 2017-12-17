@@ -9,8 +9,12 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.UnknownFormatConversionException;
+import java.util.stream.Collectors;
 
 
 public class MonitorProcessor {
@@ -33,19 +37,17 @@ public class MonitorProcessor {
     private Monitor doProcess(Document doc) {
         Monitor monitor = new Monitor();
         setMonitorName(doc, monitor);
-        setMonitorPrice(doc, monitor);
+        parsePrice(doc, monitor);
         setDescription(doc, monitor);
         setSpecification(doc, monitor);
+        setPictureUrls(doc, monitor);
+        setDeleveryDate(doc, monitor);
         return monitor;
     }
 
     private void setMonitorName(Document doc, Monitor monitor) {
         String name = parseName(doc);
         monitor.setName(name);
-    }
-
-    private void setMonitorPrice(Document doc, Monitor monitor) {
-        parsePrice(doc, monitor);
     }
 
     private void setDescription(Document doc, Monitor monitor) {
@@ -64,6 +66,21 @@ public class MonitorProcessor {
             String[] properties = e.text().toLowerCase().trim().split(": ");
             setMonitorSpecificationByPropertiesArray(monitor, properties);
         }
+    }
+
+    private void setPictureUrls(Document doc, Monitor monitor) {
+        Elements imageElements = doc.select("div.swiper-slide > img");
+        List<Image> imgs =
+                imageElements.stream().map(item -> new Image(item.attr("src"))).collect(Collectors.toList());
+        monitor.setImages(imgs);
+    }
+
+    private void setDeleveryDate(Document doc, Monitor monitor) {
+        Element date = doc.select("h3:contains(Átvétel)").first().parent()
+                .select("div > p:contains(házhozszállításnál) > strong").first();
+        String dateString = date.text().split(" ")[0];
+        LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy.MM.dd."));
+        monitor.setDeleveryTime(localDate);
     }
 
     private void setMonitorSpecificationByPropertiesArray(Monitor monitor, String[] properties) {
