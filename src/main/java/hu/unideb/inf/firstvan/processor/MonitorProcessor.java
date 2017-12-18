@@ -1,5 +1,6 @@
 package hu.unideb.inf.firstvan.processor;
 
+import com.sun.media.sound.InvalidFormatException;
 import hu.unideb.inf.firstvan.model.*;
 
 import hu.unideb.inf.firstvan.utils.NumberParser;
@@ -17,7 +18,7 @@ import java.util.UnknownFormatConversionException;
 import java.util.stream.Collectors;
 
 
-public class MonitorProcessor {
+public class MonitorProcessor extends BaseMonitorProcessor {
 
     public MonitorProcessor() {
     }
@@ -34,7 +35,7 @@ public class MonitorProcessor {
         return monitor;
     }
 
-    private Monitor doProcess(Document doc) {
+    private Monitor doProcess(Document doc) throws InvalidFormatException {
         Monitor monitor = new Monitor();
         setMonitorName(doc, monitor);
         parsePrice(doc, monitor);
@@ -156,29 +157,12 @@ public class MonitorProcessor {
     }
 
     private String parseName(Document doc) {
-        Element element = doc.select(".product-name").first();
-        return element.text();
+        return this.parseNameFromDoc(doc.select(".product-name").first());
     }
 
-    private void parsePrice(Document doc, Monitor monitor) {
+    private void parsePrice(Document doc, Monitor monitor) throws InvalidFormatException {
         Element element = doc.select(".lg.purple").first();
-        String[] priceInfo = element.text().split(" ");
-        if(priceInfo.length >= 2) {
-            StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < priceInfo.length - 1; i++) {
-                sb.append(priceInfo[i]);
-            }
-
-            Price p = getPrice(priceInfo[priceInfo.length - 1], sb);
-            monitor.setPrice(p);
-        }
-    }
-
-    private Price getPrice(String currency, StringBuilder sb) {
-        Price p = new Price();
-        p.setValue(BigDecimal.valueOf(Long.valueOf(sb.toString())));
-        p.setCurrency(currency);
-        return p;
+        monitor.setPrice(this.parsePriceFromDoc(element));
     }
 
     private String parseDescription(Document doc) {
@@ -186,7 +170,7 @@ public class MonitorProcessor {
         for(Element e : elements) {
             String header = e.text().trim().toLowerCase();
             if(header.equals("leírás")) {
-                return e.parent().select("div > p").first().text().replace('"', '\"');
+                return this.parseDescriptionFromDoc(e.parent().select("div > p").first());
             }
         }
         return "";

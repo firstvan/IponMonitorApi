@@ -1,5 +1,6 @@
 package hu.unideb.inf.firstvan;
 
+import hu.unideb.inf.firstvan.api.MonitorList;
 import hu.unideb.inf.firstvan.api.MonitorSearchByNameAndTypeImpl;
 import hu.unideb.inf.firstvan.utils.IMRouter;
 import org.restlet.Application;
@@ -30,6 +31,7 @@ public class Main extends Application {
     public Restlet createInboundRoot() {
         IMRouter router = new IMRouter(getContext(), PATH, PORT);
         router.attach("/monitorSearch?name={name}&type={type}", MonitorSearchByNameAndTypeImpl.class);
+        router.attach("/monitorList", MonitorList.class);
         return router.getRouter();
     }
 
