@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
                 "name",
                 "price",
                 "localUri",
-                "description"
+                "shortDescription"
         }
 )
 public class ResultItem {
@@ -31,14 +31,14 @@ public class ResultItem {
     private String localUri;
 
     @XmlElement
-    private String description;
+    private String shortDescription;
 
-    public ResultItem(String uri, String name, Price price, String localUri, String description) {
+    public ResultItem(String uri, String name, Price price, String localUri, String shortDescription) {
         this.uri = uri;
         this.name = name;
         this.price = price;
         this.localUri = localUri;
-        this.description = description;
+        this.shortDescription = shortDescription;
     }
 
     public ResultItem() {
@@ -76,11 +76,11 @@ public class ResultItem {
         this.localUri = localUri;
     }
 
-    public String getDescription() {
-        return description;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 }

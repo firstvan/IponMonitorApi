@@ -2,6 +2,7 @@ package hu.unideb.inf.firstvan.services;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import hu.unideb.inf.firstvan.api.MonitorByLink;
 import hu.unideb.inf.firstvan.model.Monitor;
 import hu.unideb.inf.firstvan.processor.MonitorProcessor;
 import org.jsoup.Jsoup;
@@ -15,7 +16,6 @@ import java.io.IOException;
 public class MonitorSearchByNameAndTypeService {
 
     private static String SEARCH_URI = "https://ipon.hu/search/shop-full/monitor%20";
-    private static String ITEM_URI = "https://ipon.hu";
 
     public MonitorSearchByNameAndTypeService() {
     }
@@ -35,13 +35,10 @@ public class MonitorSearchByNameAndTypeService {
         Element link = doc.select("a.to-product").first();
         String product = link.attr("href");
         product = product.replace("/termek", "");
-        return redirectToItem(product);
+
+        MonitorByLinkService mls = new MonitorByLinkService();
+        return mls.doSearch(product);
     }
 
-    private Monitor redirectToItem(String href) throws IOException {
-        String url = ITEM_URI + href;
-        Document doc = Jsoup.connect(url).userAgent("Mozzila").get();
-        MonitorProcessor mp = new MonitorProcessor();
-        return mp.parse(doc, url);
-    }
+
 }

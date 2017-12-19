@@ -11,13 +11,13 @@ public class MonitorList extends ServerResource {
 
     @Get("json|xml")
     public ResultList represent() {
-        String start = getAttribute("start");
-        String numOfItem = getAttribute("num");
+        String size = getAttribute("size");
+        String from = getAttribute("from");
 
         MonitorListService monitorListService = new MonitorListService();
 
         try {
-            return monitorListService.doSearch();
+            return monitorListService.doSearch(size, from);
         } catch (Exception e) {
             throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
         }

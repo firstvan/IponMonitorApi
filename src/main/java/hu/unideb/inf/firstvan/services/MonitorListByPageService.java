@@ -9,33 +9,24 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-public class MonitorListService {
-
+public class MonitorListByPageService {
     private static final String SEARCH_URI = "https://ipon.hu/webshop/tag/megjelenitok/monitor";
 
-    public MonitorListService() {
+    public MonitorListByPageService() {
     }
 
-    public ResultList doSearch(String size, String from) throws IOException {
+    public ResultList doSearch(int pageNo) throws IOException {
         WebClient webClient = new WebClient();
-        String uri = SEARCH_URI;
-        int tempSize = 50;
-
-        if (size != null) {
-            tempSize = Integer.valueOf(size);
-            uri += "?listlimit=" + tempSize;
-        }
+        String uri = SEARCH_URI + "/p" + pageNo;
 
         HtmlPage page = webClient.getPage(uri);
         String content = page.getWebResponse().getContentAsString();
         Document doc = Jsoup.parse(content);
 
         MonitorListProcessor monitorListProcessor = new MonitorListProcessor();
-        ResultList resultList = monitorListProcessor.parse(doc, from);
-        resultList.setNumOfItem(tempSize);
-        if (from != null) {
-            resultList.setFrom(Integer.parseInt(from));
-        }
+        ResultList resultList = monitorListProcessor.parse(doc, null);
+        resultList.setNumOfItem(50);
+        resultList.setFrom(pageNo * 50);
         return resultList;
     }
 

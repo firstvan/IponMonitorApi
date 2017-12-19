@@ -1,14 +1,14 @@
 package hu.unideb.inf.firstvan;
 
+import hu.unideb.inf.firstvan.api.MonitorByLink;
 import hu.unideb.inf.firstvan.api.MonitorList;
+import hu.unideb.inf.firstvan.api.MonitorListByPage;
 import hu.unideb.inf.firstvan.api.MonitorSearchByNameAndTypeImpl;
 import hu.unideb.inf.firstvan.utils.IMRouter;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
-import org.restlet.routing.Router;
-
 
 public class Main extends Application {
     static {
@@ -32,6 +32,10 @@ public class Main extends Application {
         IMRouter router = new IMRouter(getContext(), PATH, PORT);
         router.attach("/monitorSearch?name={name}&type={type}", MonitorSearchByNameAndTypeImpl.class);
         router.attach("/monitorList", MonitorList.class);
+        router.attach("/monitorList?page={page}", MonitorListByPage.class);
+        router.attach("/monitorList/{size}", MonitorList.class);
+        router.attach("/monitorList/{size}?from={from}", MonitorList.class);
+        router.attach("/webshop/product/{name}/{no}", MonitorByLink.class);
         return router.getRouter();
     }
 
