@@ -7,10 +7,9 @@ import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@javax.xml.bind.annotation.XmlRootElement
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@javax.xml.bind.annotation.XmlType(
-        name = "Monitor",
+@XmlType(
         propOrder = {
             "name",
             "price",
@@ -187,9 +186,5 @@ public class Monitor {
 
     public void setDeleveryTime(LocalDate deleveryTime) {
         this.deleveryTime = deleveryTime;
-    }
-
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
     }
 }

@@ -3,10 +3,9 @@ package hu.unideb.inf.firstvan.model;
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
-@javax.xml.bind.annotation.XmlRootElement
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@javax.xml.bind.annotation.XmlType(
-        name = "ResultList",
+@XmlType(
         propOrder = {
             "from",
             "numOfItem",

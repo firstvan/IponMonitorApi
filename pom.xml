@@ -128,6 +128,8 @@
                 <configuration>
                     <sources>
                         <source>src/main/java/hu/unideb/inf/firstvan/model/Monitor.java</source>
+                        <source>src/main/java/hu/unideb/inf/firstvan/model/ResultList.java</source>
+                        <source>src/main/java/hu/unideb/inf/firstvan/model/ResultItem.java</source>
                     </sources>
                 </configuration>
             </plugin>
